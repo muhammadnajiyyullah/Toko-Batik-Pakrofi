@@ -1,0 +1,72 @@
+﻿python : test_alur_transaksi_lengkap (test_integrasi.TestIntegrasiToko.test_alur_transaksi_lengkap) ... ok
+At line:1 char:32
++ ... IOENCODING='utf-8'; python -m unittest discover tests -v 2>&1 | Out-F ...
++                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_alur_trans...lengkap) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+test_data_demo_awal (test_integrasi.TestIntegrasiToko.test_data_demo_awal) ... ok
+test_duplikat_produk_dan_pelanggan_ditolak 
+(test_integrasi.TestIntegrasiToko.test_duplikat_produk_dan_pelanggan_ditolak) ... ok
+test_konsol_menangani_error (test_integrasi.TestIntegrasiToko.test_konsol_menangani_error) ... ok
+test_perintah_konsol (test_integrasi.TestIntegrasiToko.test_perintah_konsol) ... ok
+test_reset_mengembalikan_data_demo (test_integrasi.TestIntegrasiToko.test_reset_mengembalikan_data_demo) ... ok
+test_tambah_produk_dan_pelanggan (test_integrasi.TestIntegrasiToko.test_tambah_produk_dan_pelanggan) ... ok
+test_transaksi_gagal_tidak_mengubah_data (test_integrasi.TestIntegrasiToko.test_transaksi_gagal_tidak_mengubah_data) 
+... ok
+test_cetak_struk_dan_ringkasan (test_laporan.TestLaporan.test_cetak_struk_dan_ringkasan) ... ok
+test_laporan_kosong (test_laporan.TestLaporan.test_laporan_kosong) ... ok
+test_produk_terlaris (test_laporan.TestLaporan.test_produk_terlaris) ... ok
+test_rekap_per_pelanggan (test_laporan.TestLaporan.test_rekap_per_pelanggan) ... ok
+test_total_pendapatan_dan_rekap (test_laporan.TestLaporan.test_total_pendapatan_dan_rekap) ... ok
+test_transaksi_belum_diproses_ditolak (test_laporan.TestLaporan.test_transaksi_belum_diproses_ditolak) ... ok
+test_transaksi_duplikat_ditolak (test_laporan.TestLaporan.test_transaksi_duplikat_ditolak) ... ok
+test_daftar_pelanggan_dan_pencarian (test_pelanggan.TestPelanggan.test_daftar_pelanggan_dan_pencarian) ... ok
+test_data_pelanggan_tidak_valid (test_pelanggan.TestPelanggan.test_data_pelanggan_tidak_valid) ... ok
+test_diskon_member_sepuluh_persen (test_pelanggan.TestPelanggan.test_diskon_member_sepuluh_persen) ... ok
+test_diskon_reguler_nol (test_pelanggan.TestPelanggan.test_diskon_reguler_nol) ... ok
+test_fungsi_cari_pelanggan_dengan_dict (test_pelanggan.TestPelanggan.test_fungsi_cari_pelanggan_dengan_dict) ... ok
+test_id_duplikat_ditolak (test_pelanggan.TestPelanggan.test_id_duplikat_ditolak) ... ok
+test_pelanggan_tidak_terdaftar (test_pelanggan.TestPelanggan.test_pelanggan_tidak_terdaftar) ... ok
+test_riwayat_tidak_bisa_diubah_dari_luar (test_pelanggan.TestPelanggan.test_riwayat_tidak_bisa_diubah_dari_luar) ... ok
+test_tambah_riwayat_invalid (test_pelanggan.TestPelanggan.test_tambah_riwayat_invalid) ... ok
+test_harga_jual_polymorphism (test_produk_batik.TestProdukBatik.test_harga_jual_polymorphism) ... ok
+test_harga_negatif_ditolak (test_produk_batik.TestProdukBatik.test_harga_negatif_ditolak) ... ok
+test_harga_nol_ditolak (test_produk_batik.TestProdukBatik.test_harga_nol_ditolak) ... ok
+test_jumlah_tidak_valid (test_produk_batik.TestProdukBatik.test_jumlah_tidak_valid) ... ok
+test_kode_kosong_ditolak (test_produk_batik.TestProdukBatik.test_kode_kosong_ditolak) ... ok
+test_kurangi_stok (test_produk_batik.TestProdukBatik.test_kurangi_stok) ... ok
+test_nama_kosong_ditolak (test_produk_batik.TestProdukBatik.test_nama_kosong_ditolak) ... ok
+test_objek_valid_terbentuk (test_produk_batik.TestProdukBatik.test_objek_valid_terbentuk) ... ok
+test_setter_harga_dan_stok_tervalidasi (test_produk_batik.TestProdukBatik.test_setter_harga_dan_stok_tervalidasi) ... 
+ok
+test_stok_negatif_ditolak (test_produk_batik.TestProdukBatik.test_stok_negatif_ditolak) ... ok
+test_stok_tidak_cukup (test_produk_batik.TestProdukBatik.test_stok_tidak_cukup) ... ok
+test_tambah_stok (test_produk_batik.TestProdukBatik.test_tambah_stok) ... ok
+test_duplikat_produk_dijumlahkan_saat_cek_stok 
+(test_transaksi.TestTransaksi.test_duplikat_produk_dijumlahkan_saat_cek_stok) ... ok
+test_duplikat_produk_valid_mengurangi_stok_sekali 
+(test_transaksi.TestTransaksi.test_duplikat_produk_valid_mengurangi_stok_sekali) ... ok
+test_jumlah_tidak_valid (test_transaksi.TestTransaksi.test_jumlah_tidak_valid) ... ok
+test_stok_habis_saat_proses (test_transaksi.TestTransaksi.test_stok_habis_saat_proses) ... ok
+test_stok_tidak_berubah_bila_salah_satu_item_gagal 
+(test_transaksi.TestTransaksi.test_stok_tidak_berubah_bila_salah_satu_item_gagal) ... ok
+test_to_dict_berisi_rincian (test_transaksi.TestTransaksi.test_to_dict_berisi_rincian) ... ok
+test_total_dengan_diskon_member (test_transaksi.TestTransaksi.test_total_dengan_diskon_member) ... ok
+test_total_tanpa_diskon (test_transaksi.TestTransaksi.test_total_tanpa_diskon) ... ok
+test_transaksi_kosong_tidak_bisa_diproses (test_transaksi.TestTransaksi.test_transaksi_kosong_tidak_bisa_diproses) ... 
+ok
+test_transaksi_tidak_bisa_diproses_dua_kali (test_transaksi.TestTransaksi.test_transaksi_tidak_bisa_diproses_dua_kali) 
+... ok
+test_api_error_validasi (test_web.TestWebsite.test_api_error_validasi) ... ok
+test_api_konsol (test_web.TestWebsite.test_api_konsol) ... ok
+test_api_produk_dan_pelanggan (test_web.TestWebsite.test_api_produk_dan_pelanggan) ... ok
+test_api_reset (test_web.TestWebsite.test_api_reset) ... ok
+test_api_tambah_produk (test_web.TestWebsite.test_api_tambah_produk) ... ok
+test_api_transaksi (test_web.TestWebsite.test_api_transaksi) ... ok
+test_halaman_utama (test_web.TestWebsite.test_halaman_utama) ... ok
+
+----------------------------------------------------------------------
+Ran 53 tests in 0.067s
+
+OK
