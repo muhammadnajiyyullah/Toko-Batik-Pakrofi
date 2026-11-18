@@ -1,0 +1,176 @@
+@startuml
+' Diagram UML Toko Batik Rofi
+' Render dengan PlantUML: https://plantuml.com/
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+hide circle
+
+class TokoBatikError extends Exception {
+}
+
+class DataProdukTidakValidError extends TokoBatikError {
+}
+
+class DataPelangganTidakValidError extends TokoBatikError {
+}
+
+class PelangganTidakTerdaftarError extends TokoBatikError {
+}
+
+class StokHabisError extends TokoBatikError {
+}
+
+class JumlahTidakValidError extends TokoBatikError {
+}
+
+class TransaksiTidakValidError extends TokoBatikError {
+}
+
+class LaporanKosongError extends TokoBatikError {
+}
+
+class ProdukBatik {
+  - __kode : str
+  - __nama : str
+  - __harga_dasar : float
+  - __stok : int
+  + kode : str <<property>>
+  + nama : str <<property>>
+  + jenis : str <<property>>
+  + harga_dasar : float <<property>>
+  + stok : int <<property>>
+  + harga_jual() : float
+  + kurangi_stok(jumlah : int) : int
+  + tambah_stok(jumlah : int) : int
+  + info() : str
+}
+
+class BatikTulis {
+  + harga_jual() : float
+}
+
+class BatikCap {
+  + harga_jual() : float
+}
+
+class BatikPrint {
+  + harga_jual() : float
+}
+
+class Pelanggan {
+  - __id : str
+  - __nama : str
+  - __no_hp : str
+  - __riwayat_belanja : list
+  + id : str <<property>>
+  + nama : str <<property>>
+  + no_hp : str <<property>>
+  + jenis : str <<property>>
+  + riwayat_belanja : list <<property>>
+  + tambah_riwayat(transaksi)
+  + lihat_riwayat() : list
+  + diskon() : float
+  + info() : str
+}
+
+class DaftarPelanggan {
+  - __data : dict
+  + tambah(pelanggan : Pelanggan)
+  + cari_pelanggan(id_pelanggan : str) : Pelanggan
+  + semua() : list
+}
+
+class PelangganReguler {
+  + diskon() : float
+}
+
+class PelangganMember {
+  + diskon() : float
+}
+
+class Transaksi {
+  - __id_transaksi : str
+  - __pelanggan : Pelanggan
+  - __item : list
+  - __tanggal : datetime
+  - __diproses : bool
+  + id_transaksi : str <<property>>
+  + pelanggan : Pelanggan <<property>>
+  + item : list <<property>>
+  + tanggal : datetime <<property>>
+  + diproses : bool <<property>>
+  + tambah_item(produk : ProdukBatik, jumlah : int)
+  + hitung_subtotal() : float
+  + hitung_diskon() : float
+  + hitung_total() : float
+  + proses() : float
+  + to_dict() : dict
+  + info() : str
+}
+
+class Laporan {
+  - __daftar_transaksi : list
+  - __rekap_produk : dict
+  - __nama_produk : dict
+  - __rekap_pelanggan : dict
+  + daftar_transaksi : list <<property>>
+  + rekap_produk : dict <<property>>
+  + tambah_transaksi(transaksi : Transaksi)
+  + total_pendapatan() : float
+  + produk_terlaris() : dict
+  + rekap_per_pelanggan() : dict
+  + cetak_struk(transaksi : Transaksi) : str
+  + cetak_ringkasan() : str
+}
+
+class TokoBatik {
+  - __produk : dict
+  - __pelanggan : DaftarPelanggan
+  - __laporan : Laporan
+  - __counter_transaksi : int
+  + laporan : Laporan <<property>>
+  + tambah_produk(jenis, kode, nama, harga, stok)
+  + cari_produk(kode) : ProdukBatik
+  + tambah_pelanggan(id, nama, no_hp, tipe)
+  + cari_pelanggan(id) : Pelanggan
+  + buat_transaksi(id_pelanggan, items) : Transaksi
+  + riwayat_pelanggan(id) : tuple
+  + cetak_struk(id_transaksi) : str
+  + cetak_laporan() : str
+  + dashboard_data() : dict
+  + laporan_data() : dict
+}
+
+class KonsolToko {
+  + jalankan(baris : str) : list
+}
+
+ProdukBatik <|-- BatikTulis
+ProdukBatik <|-- BatikCap
+ProdukBatik <|-- BatikPrint
+
+Pelanggan <|-- PelangganReguler
+Pelanggan <|-- PelangganMember
+
+DaftarPelanggan o-- "0..*" Pelanggan : data
+Transaksi o-- "1..*" ProdukBatik : item
+Transaksi --> "1" Pelanggan : pembeli
+Laporan o-- "0..*" Transaksi : menyimpan
+Laporan ..> Transaksi : cetak_struk()
+
+TokoBatik o-- "0..*" ProdukBatik : mengelola
+TokoBatik o-- "1" DaftarPelanggan : mengelola
+TokoBatik o-- "1" Laporan : mengelola
+TokoBatik ..> Transaksi : membuat
+KonsolToko --> TokoBatik : memakai
+
+Transaksi ..> StokHabisError
+Transaksi ..> JumlahTidakValidError
+Transaksi ..> TransaksiTidakValidError
+Pelanggan ..> PelangganTidakTerdaftarError
+Pelanggan ..> DataPelangganTidakValidError
+Laporan ..> LaporanKosongError
+Laporan ..> TransaksiTidakValidError
+ProdukBatik ..> DataProdukTidakValidError
+
+@enduml

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toko Batik Rofi — Sistem Penjualan</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="batik-glow batik-glow-1"></div>
+  <div class="batik-glow batik-glow-2"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">B</div>
+        <div class="brand-copy">
+          <strong>Toko Batik Rofi</strong>
+          <span>Sistem Penjualan</span>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Navigasi utama">
+        <button class="nav-item active" data-page="dashboard">
+          <span class="nav-icon">◈</span>
+          <span>Dasbor</span>
+        </button>
+        <button class="nav-item" data-page="produk">
+          <span class="nav-icon">▦</span>
+          <span>Produk</span>
+        </button>
+        <button class="nav-item" data-page="pelanggan">
+          <span class="nav-icon">◉</span>
+          <span>Pelanggan</span>
+        </button>
+        <button class="nav-item" data-page="transaksi">
+          <span class="nav-icon">⇄</span>
+          <span>Transaksi</span>
+        </button>
+        <button class="nav-item" data-page="laporan">
+          <span class="nav-icon">▤</span>
+          <span>Laporan</span>
+        </button>
+        <button class="nav-item" data-page="konsol">
+          <span class="nav-icon">⌘</span>
+          <span>Konsol</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-card">
+        <p class="eyebrow">Mode Demo</p>
+        <p>Data disimpan di memori server. Kembalikan ke data awal kapan saja.</p>
+        <button id="resetBtn" class="btn btn-ghost btn-sm" type="button">Reset Data</button>
+      </div>
+
+      <div class="sidebar-foot">
+        <span class="status-dot"></span>
+        <span>Python OOP · Flask</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" id="pageEyebrow">Ringkasan</p>
+          <h1 id="pageTitle">Dasbor</h1>
+        </div>
+        <div class="topbar-right">
+          <span class="live-pill"><span class="status-dot"></span> Data demo aktif</span>
+          <span class="clock" id="clock"></span>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- ============================ DASBOR ============================ -->
+        <section class="page active" id="page-dashboard">
+          <div class="stat-grid">
+            <article class="stat-card stat-gold">
+              <span class="stat-label">Total Pendapatan</span>
+              <strong id="statPendapatan">Rp0</strong>
+              <span class="stat-note">Akumulasi seluruh transaksi</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Transaksi</span>
+              <strong id="statTransaksi">0</strong>
+              <span class="stat-note">Transaksi berhasil diproses</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Pelanggan</span>
+              <strong id="statPelanggan">0</strong>
+              <span class="stat-note">Reguler dan member</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Produk</span>
+              <strong id="statProduk">0</strong>
+              <span class="stat-note">Batik tulis, cap, dan print</span>
+            </article>
+          </div>
+
+          <div class="grid-2">
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Performa</p>
+                  <h2>Produk Terlaris</h2>
+                </div>
+                <button class="btn btn-ghost btn-sm" data-go="laporan" type="button">Lihat laporan</button>
+              </div>
+              <div id="bestSeller" class="best-seller"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Perhatian</p>
+                  <h2>Stok Menipis</h2>
+                </div>
+                <button class="btn btn-ghost btn-sm" data-go="produk" type="button">Kelola produk</button>
+              </div>
+              <div id="lowStock" class="stack-list"></div>
+            </article>
+          </div>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Aktivitas</p>
+                <h2>Transaksi Terbaru</h2>
+              </div>
+              <button class="btn btn-primary btn-sm" data-go="transaksi" type="button">Buat transaksi</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tanggal</th>
+                    <th>Pelanggan</th>
+                    <th>Item</th>
+                    <th class="text-right">Total</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="tabelTransaksiTerbaru"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <!-- ============================ PRODUK ============================ -->
+        <section class="page" id="page-produk">
+          <div class="page-head">
+            <div>
+              <p class="eyebrow">Inventaris</p>
+              <h2>Daftar Produk Batik</h2>
+              <p class="muted">Harga jual dihitung otomatis dari jenis batik.</p>
+            </div>
+            <button class="btn btn-primary" id="toggleProdukForm" type="button">+ Tambah Produk</button>
+          </div>
+
+          <form id="formProduk" class="panel form-panel hidden">
+            <div class="form-grid">
+              <label>
+                Jenis batik
+                <select name="jenis" required>
+                  <option value="tulis">Batik Tulis (×1,5)</option>
+                  <option value="cap">Batik Cap (×1,2)</option>
+                  <option value="print">Batik Print (×1,0)</option>
+                </select>
+              </label>
+              <label>
+                Kode produk
+                <input name="kode" placeholder="Contoh: BT03" required maxlength="12">
+              </label>
+              <label class="span-2">
+                Nama produk
+                <input name="nama" placeholder="Contoh: Batik Tulis Sido Mukti" required maxlength="80">
+              </label>
+              <label>
+                Harga dasar (Rp)
+                <input name="harga_dasar" type="number" min="1" step="1" placeholder="250000" required>
+              </label>
+              <label>
+                Stok awal
+                <input name="stok" type="number" min="0" step="1" placeholder="10" required>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-ghost" id="batalProduk">Batal</button>
+              <button type="submit" class="btn btn-primary">Simpan Produk</button>
+            </div>
+          </form>
+
+          <article class="panel">
+            <div class="toolbar">
+              <input id="searchProduk" type="search" placeholder="Cari kode atau nama produk...">
+              <span class="muted" id="produkCount"></span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Kode</th>
+                    <th>Nama</th>
+                    <th>Jenis</th>
+                    <th class="text-right">Harga Dasar</th>
+                    <th class="text-right">Harga Jual</th>
+                    <th class="text-right">Stok</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelProduk"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <!-- ============================ PELANGGAN ============================ -->
+        <section class="page" id="page-pelanggan">
+          <div class="page-head">
+            <div>
+              <p class="eyebrow">CRM</p>
+              <h2>Daftar Pelanggan</h2>
+              <p class="muted">Member otomatis mendapat diskon 10% pada transaksi.</p>
+            </div>
+            <button class="btn btn-primary" id="togglePelangganForm" type="button">+ Daftarkan Pelanggan</button>
+          </div>
+
+          <form id="formPelanggan" class="panel form-panel hidden">
+            <div class="form-grid">
+              <label>
+                ID pelanggan
+                <input name="id" placeholder="Contoh: C004" required maxlength="12">
+              </label>
+              <label>
+                Tipe pelanggan
+                <select name="tipe" required>
+                  <option value="reguler">Reguler (0%)</option>
+                  <option value="member">Member (10%)</option>
+                </select>
+              </label>
+              <label>
+                Nama pelanggan
+                <input name="nama" placeholder="Nama lengkap" required maxlength="80">
+              </label>
+              <label>
+                Nomor HP
+                <input name="no_hp" placeholder="081234567890" required maxlength="20">
+              </label>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-ghost" id="batalPelanggan">Batal</button>
+              <button type="submit" class="btn btn-primary">Simpan Pelanggan</button>
+            </div>
+          </form>
+
+          <article class="panel">
+            <div class="toolbar">
+              <input id="searchPelanggan" type="search" placeholder="Cari ID atau nama pelanggan...">
+              <span class="muted" id="pelangganCount"></span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>No. HP</th>
+                    <th>Tipe</th>
+                    <th class="text-right">Diskon</th>
+                    <th class="text-right">Transaksi</th>
+                    <th class="text-right">Total Belanja</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelPelanggan"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <!-- ============================ TRANSAKSI ============================ -->
+        <section class="page" id="page-transaksi">
+          <div class="page-head">
+            <div>
+              <p class="eyebrow">Kasir</p>
+              <h2>Transaksi Penjualan</h2>
+              <p class="muted">Stok diperiksa seluruhnya sebelum transaksi diproses.</p>
+            </div>
+          </div>
+
+          <div class="grid-2 transaksi-grid">
+            <form id="formTransaksi" class="panel">
+              <div class="panel-head">
+                <h2>Transaksi Baru</h2>
+                <span class="badge badge-gold" id="badgeDiskon">Diskon 0%</span>
+              </div>
+
+              <label class="field">
+                Pelanggan
+                <select id="pilihPelanggan" required></select>
+              </label>
+
+              <div class="item-list-head">
+                <span>Item</span>
+                <button type="button" class="btn btn-ghost btn-sm" id="tambahItem">+ Tambah Item</button>
+              </div>
+              <div id="itemRows" class="item-rows"></div>
+
+              <div class="total-box">
+                <div><span>Subtotal</span><strong id="txSubtotal">Rp0</strong></div>
+                <div><span>Diskon</span><strong id="txDiskon">Rp0</strong></div>
+                <div class="grand"><span>Total</span><strong id="txTotal">Rp0</strong></div>
+              </div>
+
+              <button class="btn btn-primary btn-block" type="submit">Proses Transaksi</button>
+            </form>
+
+            <article class="panel">
+              <div class="panel-head">
+                <h2>Riwayat Transaksi</h2>
+                <span class="muted" id="transaksiCount"></span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Tanggal</th>
+                      <th>Pelanggan</th>
+                      <th class="text-right">Total</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabelTransaksi"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ============================ LAPORAN ============================ -->
+        <section class="page" id="page-laporan">
+          <div class="page-head">
+            <div>
+              <p class="eyebrow">Analitik</p>
+              <h2>Laporan Penjualan</h2>
+              <p class="muted">Rekap otomatis dari seluruh transaksi yang tersimpan.</p>
+            </div>
+            <button class="btn btn-primary" id="printLaporan" type="button">Cetak Laporan</button>
+          </div>
+
+          <div class="stat-grid stat-grid-3">
+            <article class="stat-card stat-gold">
+              <span class="stat-label">Total Pendapatan</span>
+              <strong id="lapPendapatan">Rp0</strong>
+              <span class="stat-note">Setelah diskon pelanggan</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Item Terjual</span>
+              <strong id="lapItem">0</strong>
+              <span class="stat-note">Dari seluruh transaksi</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Produk Terlaris</span>
+              <strong id="lapTerlaris">—</strong>
+              <span class="stat-note" id="lapTerlarisNote">Belum ada data</span>
+            </article>
+          </div>
+
+          <div class="grid-2">
+            <article class="panel">
+              <div class="panel-head">
+                <h2>Rekap per Produk</h2>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Kode</th>
+                      <th>Produk</th>
+                      <th class="text-right">Terjual</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rekapProduk"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <h2>Rekap per Pelanggan</h2>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Pelanggan</th>
+                      <th class="text-right">Transaksi</th>
+                      <th class="text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rekapPelanggan"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+
+          <article class="panel report-panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Dokumen</p>
+                <h2>Ringkasan Laporan</h2>
+              </div>
+              <button class="btn btn-ghost btn-sm" id="printLaporan2" type="button">Cetak</button>
+            </div>
+            <pre id="teksLaporan" class="report-text"></pre>
+          </article>
+        </section>
+
+        <!-- ============================ KONSOL ============================ -->
+        <section class="page" id="page-konsol">
+          <div class="page-head">
+            <div>
+              <p class="eyebrow">Terminal</p>
+              <h2>Konsol Toko Batik</h2>
+              <p class="muted">Semua perintah dijalankan oleh class Python yang sama dengan versi CLI.</p>
+            </div>
+          </div>
+
+          <article class="panel console-panel">
+            <div class="console-head">
+              <span class="console-dots"><i></i><i></i><i></i></span>
+              <span>toko-batik-rofi — konsol</span>
+              <span class="console-badge">python</span>
+            </div>
+            <div id="consoleOutput" class="console-output" aria-live="polite"></div>
+            <form id="consoleForm" class="console-input-row">
+              <span class="console-prompt">rofi@batik:~$</span>
+              <input id="consoleInput" autocomplete="off" spellcheck="false" placeholder="Ketik 'help' untuk melihat perintah...">
+            </form>
+          </article>
+
+          <div class="hint-row" id="consoleHints">
+            <button type="button" data-cmd="help">help</button>
+            <button type="button" data-cmd="produk">produk</button>
+            <button type="button" data-cmd="pelanggan">pelanggan</button>
+            <button type="button" data-cmd="transaksi">transaksi</button>
+            <button type="button" data-cmd="terlaris">terlaris</button>
+            <button type="button" data-cmd="laporan">laporan</button>
+            <button type="button" data-cmd="riwayat C001">riwayat C001</button>
+            <button type="button" data-cmd="beli C002 BP01 2">beli C002 BP01 2</button>
+            <button type="button" data-cmd="clear">clear</button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <h3 id="modalTitle">Struk</h3>
+        <button class="icon-btn" id="modalClose" type="button" aria-label="Tutup">×</button>
+      </div>
+      <pre id="modalBody" class="modal-body"></pre>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modalClose2" type="button">Tutup</button>
+        <button class="btn btn-primary" id="modalPrint" type="button">Cetak</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
